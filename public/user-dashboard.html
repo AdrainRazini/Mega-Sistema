@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard do Usuário</title>
+  <style>
+    :root {
+      --bg-color: #f9f9f9;
+      --text-color: #333;
+      --menu-bg: #ffffff;
+      --primary-color: #4CAF50;
+    }
+
+    body.dark {
+      --bg-color: #1e1e1e;
+      --text-color: #f5f5f5;
+      --menu-bg: #2b2b2b;
+      --primary-color: #81c784;
+    }
+
+    body {
+      margin: 0;
+      display: flex;
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    aside {
+      width: 220px;
+      background-color: var(--menu-bg);
+      height: 100vh;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    aside img {
+      border-radius: 50%;
+      width: 100px;
+      margin-bottom: 10px;
+      border: 2px solid var(--primary-color);
+    }
+
+    aside h2 {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    aside p {
+      font-size: 0.9rem;
+      margin: 5px 0;
+      word-break: break-word;
+    }
+
+    aside button {
+      padding: 10px;
+      border: none;
+      background-color: var(--primary-color);
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    aside button:hover {
+      background-color: #388e3c;
+    }
+
+    main.dashboard {
+      flex-grow: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .theme-toggle {
+      background: none;
+      color: var(--text-color);
+      border: 1px solid var(--text-color);
+      margin-top: auto;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <aside>
+    <img id="userphoto" src="img/anonimo.png" alt="Foto do usuário" />
+    <h2 id="username">Usuário</h2>
+    <p id="useremail">email@email.com</p>
+
+    <button onclick="window.location.href='index.html'">🏠 Voltar à Central</button>
+    <button id="logout">🚪 Sair</button>
+    <button class="theme-toggle" id="themeToggle">🌓 Alternar Tema</button>
+  </aside>
+
+  <main class="dashboard">
+    <h1>Bem-vindo(a) de volta, <span id="username-main">Usuário</span> 👋</h1>
+    <p>Você está no seu painel pessoal.</p>
+  </main>
+
+  <script>
+    // Pega dados do localStorage
+    const username = localStorage.getItem("username") || "Usuário";
+    const useremail = localStorage.getItem("useremail") || "email@email.com";
+    const userphoto = localStorage.getItem("userphoto");
+
+    // Exibe no sidebar e no conteúdo
+    document.getElementById("username").textContent = username;
+    document.getElementById("username-main").textContent = username;
+    document.getElementById("useremail").textContent = useremail;
+
+    if (userphoto && userphoto !== "") {
+      document.getElementById("userphoto").src = userphoto;
+    }
+
+    // Botão logout
+    document.getElementById("logout").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+
+    // Alternância de tema
+    const themeToggle = document.getElementById("themeToggle");
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark");
+    }
+
+    themeToggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+    });
+  </script>
+</body>
+</html>
